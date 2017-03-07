@@ -1,0 +1,25 @@
+﻿  tank.cpp
+  shell.cpp
+  playerTank.cpp
+  obstacle.cpp
+  main.cpp
+  game.cpp
+h:\tankwar-cw update\src\game.cpp(470): warning C4996: 'sf::Text::setColor': was declared deprecated
+  h:\tankwar-cw update\sfml-2.4.1\include\sfml\graphics\text.hpp(177): note: see declaration of 'sf::Text::setColor'
+h:\tankwar-cw update\src\game.cpp(483): warning C4474: 'sprintf_s' : too many arguments passed for format string
+  h:\tankwar-cw update\src\game.cpp(483): note: placeholders and their parameters expect 0 variadic arguments, but 1 were provided
+h:\tankwar-cw update\src\game.cpp(490): warning C4474: 'sprintf_s' : too many arguments passed for format string
+  h:\tankwar-cw update\src\game.cpp(490): note: placeholders and their parameters expect 0 variadic arguments, but 1 were provided
+h:\tankwar-cw update\src\game.cpp(495): warning C4474: 'sprintf_s' : too many arguments passed for format string
+  h:\tankwar-cw update\src\game.cpp(495): note: placeholders and their parameters expect 0 variadic arguments, but 1 were provided
+h:\tankwar-cw update\src\game.cpp(500): warning C4474: 'sprintf_s' : too many arguments passed for format string
+  h:\tankwar-cw update\src\game.cpp(500): note: placeholders and their parameters expect 0 variadic arguments, but 1 were provided
+  DumbTank.cpp
+h:\tankwar-cw update\src\dumbtank.cpp(229): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+h:\tankwar-cw update\src\dumbtank.cpp(346): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  boundingBox.cpp
+  aitank.cpp
+  Generating Code...
+  LINK : H:\tankwar-CW Update\Debug\tankwar.exe not found or not built by the last incremental link; performing full link
+  tankwar.vcxproj -> H:\tankwar-CW Update\Debug\tankwar.exe
+  tankwar.vcxproj -> H:\tankwar-CW Update\Debug\tankwar.pdb (Full PDB)
