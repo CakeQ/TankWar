@@ -39,6 +39,10 @@ private:
 	sf::Vector2f ourPredictedLocationGhost;
 	sf::Vector2f theirPredictedLocationGhost;
 	sf::Vector2f theirShellPredictedLocationGhost;
+	//Dan's utility variables
+	static const int patrolWidth = 4, patrolHeight = 4;
+	const float mapHeight = 570.0f, mapWidth = 780.0f;
+	sf::Vector2f patrolRoute[patrolWidth][patrolHeight], currentPatrolNode, previousPatrolNode;
 public:
     DumbTank();
     ~DumbTank();
@@ -59,5 +63,10 @@ public:
 	float getTicksToImpact(sf::Vector2f theirTankPositionIn, bool shellIn);
 	float getChangeInAngleToTarget(sf::Vector2f targetPositionIn, bool isTurret); // broken
 	bool willTheseCollideInN(sf::Vector2f target, sf::Vector2f PastLocationsInOfProjectile[5], float ticksIn);
+
+	//Dan's utility functions
+	float getDistanceToTarget(sf::Vector2f target);
+	void calculatePatrolPoints();
+	void tankPatrolRoute();
 };
 #endif
