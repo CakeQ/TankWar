@@ -13,9 +13,8 @@ DumbTank::DumbTank() // Construtor
 		HostilePastLocations[i].y = 0.0f;
 	}
 	calculatePatrolPoints(); //Calculating the points which the tank will use when patrolling. ~Dan
-	currentPatrolNode = patrolRoute[0][0];
-	previousPatrolNode.x = 0.0f;
-	previousPatrolNode.y = 0.0f;
+	currentPatrolNode = patrolRoute[1][0];
+	previousPatrolNode = patrolRoute[1][1];
 	state = Searching;
 	turnOrMove = true;
 }
@@ -61,14 +60,13 @@ void DumbTank::move()
 	    //turretGoLeft();
 		//std::cout << turretTh << std::endl;
 		
-		sf::Vector2f temp;
-		temp.x = mapWidth / 2;
-		temp.y = mapHeight / 2;
-		stop();
-		//std::cout << getChangeInAngleToTarget(temp, true) << std::endl;
-		lookToIdeal(temp);
-		moveToIdeal(temp);
-		//moveToIdeal(temp);
+		tankPatrolRoute();
+		//std::cout << "Tank location: " << getX() << " , " << getY() << std::endl;
+		//std::cout << "Next location: " << currentPatrolNode.x << " , " << currentPatrolNode.y << std::endl;
+		//std::cout << "Distance to next node:" << getDistanceToTarget(currentPatrolNode) << std::endl;
+		moveToIdeal(currentPatrolNode);
+
+
 		//enemy found? Switch to Engaging
 		//state = Engaging;
 		//enemy found? RIGHT BEHIND US !?!?! switch to Panic
@@ -254,7 +252,7 @@ void DumbTank::lookToIdeal(sf::Vector2f idealLocationIn) {
 
 
 void DumbTank::moveToIdeal(sf::Vector2f idealLocationIn) {
-
+	stop();
 	float distance = getDistanceToTarget(idealLocationIn);
 
 	//get angle to target
@@ -389,18 +387,18 @@ float DumbTank::getDistanceToTarget(sf::Vector2f target)
 }
 
 void DumbTank::calculatePatrolPoints() {
-	float xSpacer = mapWidth / (patrolWidth * 2);
+	float xSpacer = mapWidth / (patrolWidth * 4);
 	float ySpacer = mapHeight / (patrolHeight * 2);
 
-	for (int i = 0; i < patrolWidth; i++) {
-		for(int j = 0; j < patrolHeight; j++){
+	for (int i = 0; i < patrolHeight; i++) {
+		for(int j = 0; j < patrolWidth; j++){
 			
 			//X calculation
-			if ((j == 0) || (j == (patrolHeight - 1))) {
-				patrolRoute[i][j].x = ((i * (xSpacer * 2)) + (xSpacer * 3));
+			if ((j == 0) || (j == (patrolWidth - 1))) {
+				patrolRoute[i][j].x = ((j * (xSpacer * 2)) + (xSpacer * 2));
 			}
-			else{
-				patrolRoute[i][j].x = (i * (xSpacer * 6) + xSpacer);
+			else {
+				patrolRoute[i][j].x = (j * (xSpacer * 4) + xSpacer);
 			}
 
 			//Y calculation
@@ -411,11 +409,59 @@ void DumbTank::calculatePatrolPoints() {
 
 void DumbTank::tankPatrolRoute()
 {
+	//Once arrived, set current node as previous node
+	if (getDistanceToTarget(currentPatrolNode) < 5) {
+		getNextPatrolNode();
+	}
+
 	//Find a closer node
-	for (int i = 0; i < patrolWidth; i++) {
-		for (int j = 0; j < patrolHeight; j++) {
-			if ((getDistanceToTarget(patrolRoute[i][j]) < getDistanceToTarget(currentPatrolNode)) && (patrolRoute[i][j] != previousPatrolNode)) {
-				currentPatrolNode = patrolRoute[i][j];
+	for (int i = 0; i < patrolHeight; i++) {
+		for (int j = 0; j < patrolWidth; j++) {
+			if ((getDistanceToTarget(patrolRoute[j][i]) < getDistanceToTarget(currentPatrolNode)) && (patrolRoute[j][i] != previousPatrolNode)) {
+				previousPatrolNode = currentPatrolNode;
+				currentPatrolNode = patrolRoute[j][i];
+				std::cout << "[" << i << "][" << j << "]" << std::endl;
+			}
+		}
+	}
+}
+
+void DumbTank::getNextPatrolNode()
+{
+	for (int i = 0; i < patrolHeight; i++) {
+		for (int j = 0; j < patrolWidth; j++) {
+			if (currentPatrolNode == patrolRoute[i][j]) {
+				int tempX, tempY;
+				//x calculation
+				if (i == 0) {
+					tempX = j - 1;
+					if (tempX < 0)
+						tempX = 0;
+				}
+				else if (i == (patrolHeight - 1)) {
+					tempX = j + 1;
+					if (tempX > (patrolWidth - 1))
+						tempX = patrolWidth - 1;
+				}
+				else tempX = j;
+
+				//y calculation
+				if (j == (patrolWidth - 1)) {
+					tempY = i + 1;
+					if (tempY > (patrolHeight - 1))
+						tempY = patrolHeight - 1;
+				}
+				else if (j == 0) {
+					tempY = i - 1;
+					if (tempY < 0)
+						tempY = 0;
+				}
+				else tempY = i;
+
+				std::cout << "[" << tempX << "][" << tempY << "]" << std::endl;
+				previousPatrolNode = currentPatrolNode;
+				currentPatrolNode = patrolRoute[tempY][tempX];
+				return;
 			}
 		}
 	}

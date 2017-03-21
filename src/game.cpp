@@ -65,6 +65,13 @@ Game::Game() // Constructor
 	blueBuildings.push_back(Obstacle(dx,dy+40,dx+20,dy+60,sf::Color(60,60,170)));
 	blueBuildings.push_back(Obstacle(dx+20,dy+40,dx+40,dy+60,sf::Color(40,40,170)));
 
+	//TEMP: NODES
+	for (int i = 0; i < 4;  i++) {
+		for (int j = 0; j < 2; j++) {
+			blueBuildings.push_back(Obstacle((npc.patrolRoute[i][j].x - 10), (npc.patrolRoute[i][j].x + 10), (npc.patrolRoute[i][j].y - 10), (npc.patrolRoute[i][j].y + 10), sf::Color(60, 60, 170)));
+		}
+	}
+
 	resetNpc();
 	resetPlayer();
 
