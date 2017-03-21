@@ -30,7 +30,7 @@ Game::Game() // Constructor
 	dy = (float) (rand() % 200 + 10);
 
 	redBuildings.push_back(Obstacle(dx,dy,dx+20.f,dy+20.f,sf::Color(170,60,60)));
-	redBuildings.push_back(Obstacle(dx+20.f,dy,dx+40.f,dy+20.f,sf::Color(170,40,40)));
+	/*redBuildings.push_back(Obstacle(dx+20.f,dy,dx+40.f,dy+20.f,sf::Color(170,40,40)));
 	redBuildings.push_back(Obstacle(dx,dy+20.f,dx+20.f,dy+40.f,sf::Color(170,40,40)));
 	redBuildings.push_back(Obstacle(dx+20.f,dy+20.f,dx+40.f,dy+40.f,sf::Color(170,60,60)));
 	redBuildings.push_back(Obstacle(dx,dy+40.f,dx+20.f,dy+60.f,sf::Color(170,60,60)));
@@ -62,16 +62,9 @@ Game::Game() // Constructor
 	blueBuildings.push_back(Obstacle(dx+20,dy,dx+40,dy+20,sf::Color(40,40,170)));
 	blueBuildings.push_back(Obstacle(dx,dy+20,dx+20,dy+40,sf::Color(40,40,170)));
 	blueBuildings.push_back(Obstacle(dx+20,dy+20,dx+40,dy+40,sf::Color(60,60,170)));
-	blueBuildings.push_back(Obstacle(dx,dy+40,dx+20,dy+60,sf::Color(60,60,170)));
+	blueBuildings.push_back(Obstacle(dx,dy+40,dx+20,dy+60,sf::Color(60,60,170)));*/
 	blueBuildings.push_back(Obstacle(dx+20,dy+40,dx+40,dy+60,sf::Color(40,40,170)));
-
-	//TEMP: NODES
-	for (int i = 0; i < 4;  i++) {
-		for (int j = 0; j < 2; j++) {
-			blueBuildings.push_back(Obstacle((npc.patrolRoute[i][j].x - 10), (npc.patrolRoute[i][j].x + 10), (npc.patrolRoute[i][j].y - 10), (npc.patrolRoute[i][j].y + 10), sf::Color(60, 60, 170)));
-		}
-	}
-
+	
 	resetNpc();
 	resetPlayer();
 
