@@ -1,5 +1,5 @@
 ﻿  DumbTank.cpp
-h:\documents\github\tankwar\src\dumbtank.cpp(231): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-h:\documents\github\tankwar\src\dumbtank.cpp(344): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+h:\documents\github\tankwar\src\dumbtank.cpp(237): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+h:\documents\github\tankwar\src\dumbtank.cpp(346): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   tankwar.vcxproj -> H:\Documents\GitHub\TankWar\Debug\tankwar.exe
   tankwar.vcxproj -> H:\Documents\GitHub\TankWar\Debug\tankwar.pdb (Full PDB)

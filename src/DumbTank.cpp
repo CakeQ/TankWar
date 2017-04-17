@@ -13,10 +13,12 @@ DumbTank::DumbTank() // Construtor
 		HostilePastLocations[i].y = 0.0f;
 	}
 	calculatePatrolPoints(); //Calculating the points which the tank will use when patrolling. ~Dan
-	currentPatrolNode = patrolRoute[3][0];
-	previousPatrolNode = patrolRoute[2][0];
+	currentPatrolNode = patrolRoute[0][0];
+	previousPatrolNode = patrolRoute[0][1];
 	state = Searching;
 	turnOrMove = true;
+	centralTarget.x = mapWidth / 2;
+	centralTarget.y = mapHeight / 2;
 }
 
 DumbTank::~DumbTank(){} // Destructor
@@ -78,6 +80,7 @@ void DumbTank::move()
 		//ideal situation? Switch to Attacking
 		//been shot at? Switch to Dodging
 		//lost enemy? Switch to Searching
+		bool newPatrol = true;
 	}
 	if (state == Attacking) {																	//P3
 		//set ideal location just into safe radius from enemy (to charge them)
@@ -85,6 +88,7 @@ void DumbTank::move()
 		
 
 		//shot fired? switch back to Engaging
+		bool newPatrol = true;
 	}
 	if (state == Dodging) {																	//P1
 		//is it gonna hit our ghost? 
@@ -97,6 +101,7 @@ void DumbTank::move()
 		
 		//dodge
 		//dodged? switch back to Engaging
+		bool newPatrol = true;
 	}
 	if (state == Panic) {																	//P2
 		//RUN AWAY!  
@@ -104,6 +109,7 @@ void DumbTank::move()
 		//we good? yep. do we see it? 
 		// no switch to Searching
 		//yes switch to Engaging
+		bool newPatrol = true;
 	}
 
 	// updates most resent past location
@@ -261,15 +267,11 @@ void DumbTank::moveToIdeal(sf::Vector2f idealLocationIn) {
 	//check if angle to ideal location is great enough for it to be worth going backwards
 	if (angleToLocation >= -90 && angleToLocation <= 90) {
 		forwardIsEfficient = true;
-		std::cout << "forwards" << std:: endl;
 	}
 	else {
 		forwardIsEfficient = false;
-		std::cout << "backwards" << std::endl;
 	}
-
-	std::cout << angleToLocation << std::endl;
-
+	
 	if (distance > 1.7) {
 		if (turnOrMove) {
 			if (forwardIsEfficient) {
@@ -357,11 +359,6 @@ float DumbTank::getChangeInAngleToTarget(sf::Vector2f targetPositionIn, bool isT
 	} else {
 		differenceInAngle = angleToLocation - pos.getTh();
 	}
-
-	//std::cout << "angleToLocation: " << angleToLocation << std::endl;
-	//std::cout <<"turretTh: " << turretTh << std::endl;
-	//std::cout << "angleOfIncident: " << angleOfIncident << std::endl;
-
 	return(differenceInAngle);
 }
 
@@ -409,6 +406,12 @@ void DumbTank::calculatePatrolPoints() {
 			patrolRoute[i][j].y = ((i * (ySpacer * 2)) + ySpacer);
 		}
 	}
+
+	//Map corner calculation
+	mapCorners[0][0] = sf::Vector2f(25, 25);
+	mapCorners[0][1] = sf::Vector2f((mapWidth - 25), 25);
+	mapCorners[1][0] = sf::Vector2f(25, (mapHeight - 25));
+	mapCorners[1][1] = sf::Vector2f((mapWidth - 25), (mapHeight - 25));
 }
 
 void DumbTank::tankPatrolRoute()
@@ -416,10 +419,24 @@ void DumbTank::tankPatrolRoute()
 	//Once arrived, set current node as previous node
 	if (getDistanceToTarget(currentPatrolNode) < 15) {
 		getNextPatrolNode();
-		std::cout << "ARRIVED" << std::endl;
+	}
+
+	if (newPatrol == true) {
+		for (int i = 0; i < patrolHeight; i++) {
+			for (int j = 0; j < patrolWidth; j++) {
+				if (getDistanceToTarget(currentPatrolNode) > getDistanceToTarget(patrolRoute[i][j])) 
+					currentPatrolNode = patrolRoute[i][j];
+			}
+		}
+		newPatrol = false;
 	}
 
 	moveToIdeal(currentPatrolNode);
+	if (getDistanceToTarget(currentPatrolNode) > 100)
+		lookToIdeal(centralTarget);
+	else
+		lookToIdeal(currentPatrolNode);
+	std::cout << getDistanceToTarget(currentPatrolNode) << " | " << std::endl;
 }
 
 void DumbTank::getNextPatrolNode()
@@ -454,7 +471,6 @@ void DumbTank::getNextPatrolNode()
 				}
 				else tempY = i;
 
-				std::cout << "[" << tempX << "][" << tempY << "]" << std::endl;
 				previousPatrolNode = currentPatrolNode;
 				currentPatrolNode = patrolRoute[tempY][tempX];
 				return;

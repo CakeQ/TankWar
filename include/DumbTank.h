@@ -39,6 +39,12 @@ private:
 	sf::Vector2f ourPredictedLocationGhost;
 	sf::Vector2f theirPredictedLocationGhost;
 	sf::Vector2f theirShellPredictedLocationGhost;
+
+	//Dan's utility variables
+	static const int patrolWidth = 2, patrolHeight = 4;
+	const float mapHeight = 570.0f, mapWidth = 780.0f;
+	sf::Vector2f patrolRoute[patrolHeight][patrolWidth], mapCorners[2][2], currentPatrolNode, previousPatrolNode, centralTarget, aimTarget;
+	bool newPatrol = true;
 public:
     DumbTank();
     ~DumbTank();
@@ -65,10 +71,5 @@ public:
 	void calculatePatrolPoints();
 	void tankPatrolRoute();
 	void getNextPatrolNode();
-
-	//Dan's utility variables
-	static const int patrolWidth = 2, patrolHeight = 4;
-	const float mapHeight = 570.0f, mapWidth = 780.0f;
-	sf::Vector2f patrolRoute[patrolHeight][patrolWidth], currentPatrolNode, previousPatrolNode;
 };
 #endif
